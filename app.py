@@ -155,10 +155,17 @@ if has_labels:
     st.subheader("Classification Report")
     
     report = classification_report(y_test, y_pred, 
-                                   target_names=['Not Fraud', 'Fraud'],
-                                   output_dict=True)
+                                target_names=['Not Fraud', 'Fraud'],
+                                output_dict=True)
     report_df = pd.DataFrame(report).transpose()
-    st.dataframe(report_df.style.format("{:.4f}"))
+
+    # Format
+    st.dataframe(report_df.style.format({
+        'precision': '{:.4f}',
+        'recall': '{:.4f}',
+        'f1-score': '{:.4f}',
+        'support': '{:.0f}'
+    }))
 
 else:
     # only predictions
