@@ -62,8 +62,8 @@ streamlit run app.py
 -  Detailed classification report
 
 ## Deployment
-**Live App:** []
-**GitHub Repository:** []
+**Live App:** https://ml-classification-app-d8eouxhqytsfpkk3wsbpix.streamlit.app/
+**GitHub Repository:** https://github.com/mrudhularaya/ml-classification-streamlit
 
 ## Project Structure
 ```
