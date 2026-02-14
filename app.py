@@ -49,14 +49,26 @@ def load_model(model_path):
 scaler = load_scaler()
 
 # DATA PREVIEW SECTION
+st.header("Upload Test Data")
+st.markdown("Upload a CSV file with the same features as the training data (without 'Class' column for prediction, or with 'Class' for evaluation)")
 
-st.header("Preview Test Data")
+uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
-try:
-    df = pd.read_csv('data/test_data.csv')
-    st.success(f" Loaded sample data: {df.shape[0]} rows, {df.shape[1]} columns")
-except:
-    st.error(" Sample data file not found! Please retry.")
+# Option to use sample data
+use_sample = st.checkbox("Use sample test data (provided)", value=True)
+
+if use_sample:
+    try:
+        df = pd.read_csv('data/test_data.csv')
+        st.success(f" Loaded sample data: {df.shape[0]} rows, {df.shape[1]} columns")
+    except:
+        st.error(" Sample data file not found! Please upload your own CSV.")
+        st.stop()
+elif uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    st.success(f"Uploaded data: {df.shape[0]} rows, {df.shape[1]} columns")
+else:
+    st.info("Please upload a CSV file or check 'Use sample test data'")
     st.stop()
 
 # Show data preview
@@ -78,7 +90,6 @@ else:
 X_test_scaled = scaler.transform(X_test)
 
 # LOAD AND PREDICT
-
 st.markdown("---")
 st.header(f"Model: {selected_model}")
 
@@ -98,7 +109,6 @@ with st.spinner(f'Loading {selected_model} and generating predictions...'):
 st.success('Predictions complete!')
 
 # DISPLAY METRICS 
-
 if has_labels:
     st.subheader("Evaluation Metrics")
     
@@ -125,7 +135,6 @@ if has_labels:
         st.metric("MCC Score", f"{mcc:.4f}")
     
     # CONFUSION MATRIX
-
     st.markdown("---")
     st.subheader("Confusion Matrix")
 
@@ -142,7 +151,6 @@ if has_labels:
         st.pyplot(fig)
     
     # CLASSIFICATION REPORT
-
     st.markdown("---")
     st.subheader("Classification Report")
     
